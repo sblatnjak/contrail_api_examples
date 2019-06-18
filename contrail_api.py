@@ -58,6 +58,16 @@ VN.add_routing_policy(RP4, rp4_attr)
 
 
 
+>>> RP1.routing_policy_entries
+term = [term_match_condition = protocol = [u'static'], prefix = [], community = None, community_list = [], community_match_all = False, extcommunity_list = [], extcommunity_match_all = None, term_action_list = update = as_path = None, community = None, extcommunity = None, local_pref = None, med = 101, action = next]
+>>> RP2.routing_policy_entries
+term = [term_match_condition = protocol = [u'static'], prefix = [], community = None, community_list = [], community_match_all = False, extcommunity_list = [], extcommunity_match_all = None, term_action_list = update = as_path = None, community = None, extcommunity = None, local_pref = 102, med = None, action = next]
+>>> RP3.routing_policy_entries
+term = [term_match_condition = protocol = [u'static'], prefix = [], community = None, community_list = [], community_match_all = False, extcommunity_list = [], extcommunity_match_all = None, term_action_list = update = as_path = None, community = add = community = [u'999:103'], remove = None, set = None, extcommunity = None, local_pref = None, med = None, action = next]
+>>> RP4.routing_policy_entries
+term = [term_match_condition = protocol = [u'static'], prefix = [], community = None, community_list = [], community_match_all = False, extcommunity_list = [], extcommunity_match_all = None, term_action_list = update = as_path = expand = asn_list = [65004], community = None, extcommunity = None, local_pref = None, med = None, action = accept]
+
+
 #####RESULT#######
 VN config :
 {
