@@ -1,0 +1,4 @@
+curl -u admin:8dEBZhhdRYdhe2V9JkhkNRwPH http://127.0.0.1:8095/instance-ips |  python -c 'import sys, json, requests; obj=json.load(sys.stdin); iips=obj["instance-ips"];
+for iip in iips:
+    url = "http://127.0.0.1:8095/instance-ip/" + iip["uuid"]
+    r = requests.delete(url , auth=("admin", "8dEBZhhdRYdhe2V9JkhkNRwPH"))'
