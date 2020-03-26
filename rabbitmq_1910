@@ -1,4 +1,5 @@
 [root@overcloud-contrailcontroller-1 heat-admin]# cat write_to_Q.py 
+#!/usr/bin/env python
 import pika
 host_ip = "10.1.0.38"
 channel = pika.BlockingConnection(pika.ConnectionParameters(host_ip, 5673, "/", credentials=pika.PlainCredentials("guest","guest"))).channel()
@@ -8,6 +9,7 @@ channel.basic_publish(exchange='',
                       body='hi there!')
 channel.close()
 [root@overcloud-contrailcontroller-1 heat-admin]#  cat delete_Q.py 
+#!/usr/bin/env python
 import pika
 host_ip = "10.1.0.38"
 channel = pika.BlockingConnection(pika.ConnectionParameters(host_ip, 5673, "/", credentials=pika.PlainCredentials("guest","guest"))).channel()
