@@ -1,0 +1,52 @@
+[root@overcloud-contrailcontroller-1 heat-admin]# cat write_to_Q.py 
+import pika
+host_ip = "10.1.0.38"
+channel = pika.BlockingConnection(pika.ConnectionParameters(host_ip, 5673, "/", credentials=pika.PlainCredentials("guest","guest"))).channel()
+queue_name="contrail-collector.overcloud-contrailanalytics-1.localdomain"
+channel.basic_publish(exchange='',
+                      routing_key=queue_name,
+                      body='hi there!')
+channel.close()
+[root@overcloud-contrailcontroller-1 heat-admin]#  cat delete_Q.py 
+import pika
+host_ip = "10.1.0.38"
+channel = pika.BlockingConnection(pika.ConnectionParameters(host_ip, 5673, "/", credentials=pika.PlainCredentials("guest","guest"))).channel()
+queue_name="contrail-collector.overcloud-contrailanalytics-1.localdomain"
+channel.queue_delete(queue=queue_name)
+
+[root@overcloud-contrailanalytics-1 heat-admin]# docker stop contrail_analytics_collector
+
+[root@overcloud-contrailcontroller-1 heat-admin]# docker exec -it contrail_config_rabbitmq  rabbitmqctl list_queues | grep collec
+overcloud-contrailanalytics-2.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-2.localdomain	0
+overcloud-contrailanalytics-0.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-0.localdomain	0
+overcloud-contrailanalytics-1.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-1.localdomain	0
+contrail-collector.overcloud-contrailanalytics-1.localdomain	50
+contrail-collector.overcloud-contrailanalytics-0.localdomain	0
+contrail-collector.overcloud-contrailanalytics-2.localdomain	0
+
+[root@overcloud-contrailcontroller-1 heat-admin]# python write_to_Q.py
+[root@overcloud-contrailcontroller-1 heat-admin]# docker exec -it contrail_config_rabbitmq  rabbitmqctl list_queues | grep collec
+overcloud-contrailanalytics-2.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-2.localdomain	0
+overcloud-contrailanalytics-0.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-0.localdomain	0
+overcloud-contrailanalytics-1.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-1.localdomain	0
+contrail-collector.overcloud-contrailanalytics-1.localdomain	51
+contrail-collector.overcloud-contrailanalytics-0.localdomain	0
+contrail-collector.overcloud-contrailanalytics-2.localdomain	0
+
+[root@overcloud-contrailcontroller-1 heat-admin]# python delete_Q.py 
+[root@overcloud-contrailcontroller-1 heat-admin]# docker exec -it contrail_config_rabbitmq  rabbitmqctl list_queues | grep collec
+overcloud-contrailanalytics-2.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-2.localdomain	0
+overcloud-contrailanalytics-0.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-0.localdomain	0
+overcloud-contrailanalytics-1.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-1.localdomain	0
+contrail-collector.overcloud-contrailanalytics-0.localdomain	0
+contrail-collector.overcloud-contrailanalytics-2.localdomain	0
+
+[root@overcloud-contrailanalytics-1 heat-admin]# docker start contrail_analytics_collector
+
+[root@overcloud-contrailcontroller-1 heat-admin]# docker exec -it contrail_config_rabbitmq  rabbitmqctl list_queues | grep collec
+overcloud-contrailanalytics-2.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-2.localdomain	0
+overcloud-contrailanalytics-0.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-0.localdomain	0
+overcloud-contrailanalytics-1.localdomain:contrail-snmp-collector:0.overcloud-contrailanalytics-1.localdomain	0
+contrail-collector.overcloud-contrailanalytics-1.localdomain	0
+contrail-collector.overcloud-contrailanalytics-0.localdomain	0
+contrail-collector.overcloud-contrailanalytics-2.localdomain	0
