@@ -52,3 +52,13 @@ overcloud-contrailanalytics-1.localdomain:contrail-snmp-collector:0.overcloud-co
 contrail-collector.overcloud-contrailanalytics-1.localdomain	0
 contrail-collector.overcloud-contrailanalytics-0.localdomain	0
 contrail-collector.overcloud-contrailanalytics-2.localdomain	0
+
+
+[root@overcloud-contrailcontroller-1 heat-admin]# cat create_Q.py 
+import pika
+host_ip = "10.1.0.38"
+channel = pika.BlockingConnection(pika.ConnectionParameters(host_ip, 5673, "/", credentials=pika.PlainCredentials("guest","guest"))).channel()
+queue_name="new_channel"
+channel.queue_declare(queue=queue_name)
+channel.queue_bind(exchange='vnc_config.object-update', queue=queue_name) ???
+channel.close()
