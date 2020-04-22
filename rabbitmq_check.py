@@ -5,7 +5,14 @@ import json
 import requests
 from requests.auth import HTTPBasicAuth
 
-#auth=HTTPBasicAuth(self.SECRET_USERNAME, self.SECRET_PASSWORD)
+#Usage: python script.py --port "15673" --ips "10.10.10.1" "10.10.10.2" "10.10.10.3"  
+
+#example: 
+#[root@overcloud-contrailcontroller-0 slobo]# python script.py --port "15673" --ips "127.0.0.1"
+#IP: 127.0.0.1
+#Q name: contrail-control.overcloud-contrailcontroller-1.tenant.localdomain
+#number of messages: 636825
+#ALARM
 
 def get_args():
     parser = argparse.ArgumentParser(description='Process args')
