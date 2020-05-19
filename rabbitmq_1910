@@ -8,6 +8,15 @@ channel.basic_publish(exchange='',
                       routing_key=queue_name,
                       body='hi there!')
 channel.close()
+
+[root@overcloud-controller-0 heat-admin]# cat write_to_vnc_config_exchange.py
+#!/usr/bin/env python
+import pika
+host_ip = "10.0.0.13"
+channel = pika.BlockingConnection(pika.ConnectionParameters(host_ip, 5672, "/", credentials=pika.PlainCredentials("guest","eJah28uef2BwjyuXeBWnjU4kz"))).channel()
+channel.basic_publish(exchange='vnc_config.object-update',routing_key='',body='hello!')
+channel.close()
+
 [root@overcloud-contrailcontroller-1 heat-admin]#  cat delete_Q.py 
 #!/usr/bin/env python
 import pika
