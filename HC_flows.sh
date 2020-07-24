@@ -34,8 +34,7 @@ get_VM_IPs_list()
 }
 get_VM_flow_ID_list()
 {
-  VM_flow_ID=("$(flow -l --match "$1" | tail -5 | head -1 | awk -F"<=>" '{print $1}')")
-  VM_flow_IDs+=$VM_flow_ID
+  VM_flow_IDs+=("$(flow -l --match "$1" | tail -5 | head -1 | awk -F"<=>" '{print $1}')")
 }
 get_flows()
 {
