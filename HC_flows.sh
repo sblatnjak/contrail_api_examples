@@ -4,8 +4,6 @@
 #add metadata flow IDs to flow_IDs
 #get VM IP from metadata flow
 #add VM flow IDs to flow_IDs
-
-#get metadata flow???
 #get all flows from flow_IDs
 
 metadata_IPs=()
@@ -47,14 +45,12 @@ get_flows()
 #get metadata IPs
 get_metadata_IPs_list
 
-##add metadata flow IDs to flow_IDs
+##add metadata flow IDs to metadata_flow_IDs
 for i in "${!metadata_IPs[@]}"; do
-#  printf "%s\t%s\n" "$i" "${metadata_IPs[$i]}"
   if [ ! -z "${metadata_IPs[$i]}" ]; then
     get_metadata_flow_ID_list ${metadata_IPs[$i]}
   fi
 done
-#echo "${metadata_flow_IDs[@]}"
 
 ##get VM IP from metadata flow
 for i in "${!metadata_flow_IDs[@]}"; do
@@ -62,16 +58,15 @@ for i in "${!metadata_flow_IDs[@]}"; do
     get_VM_IPs_list ${metadata_flow_IDs[$i]}
   fi
 done
-#echo "${VM_overlay_IPs[@]}"
 
-#add VM flow IDs to flow_IDs
+#add VM flow IDs to VM_flow_IDs
 for i in "${!VM_overlay_IPs[@]}"; do
   if [ ! -z "${VM_overlay_IPs[$i]}" ]; then
     get_VM_flow_ID_list ${VM_overlay_IPs[$i]}
   fi
 done
 
-
+#VM + metadata flow_IDs
 flow_IDs=("${metadata_flow_IDs[@]}" "${VM_flow_IDs[@]}")
 
 for i in "${!flow_IDs[@]}"; do
