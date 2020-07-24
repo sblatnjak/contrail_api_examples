@@ -76,3 +76,5 @@ echo "Metadata_IPs: ${metadata_IPs[@]}"
 echo "VM_IPs: ${VM_overlay_IPs[@]}" 
 echo "flow_IDs: ${flow_IDs[@]}"
 echo "flows: ${flows[@]}" 
+echo "vif --list: "
+vif --list 
